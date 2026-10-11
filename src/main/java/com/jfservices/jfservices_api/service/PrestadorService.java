@@ -2,7 +2,6 @@ package com.jfservices.jfservices_api.service;
 
 import com.jfservices.jfservices_api.model.Prestador;
 import com.jfservices.jfservices_api.repository.PrestadorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +10,11 @@ import java.util.Optional;
 @Service
 public class PrestadorService {
 
-    @Autowired
-    private PrestadorRepository prestadorRepository;
+    private final PrestadorRepository prestadorRepository;
+
+    public PrestadorService(PrestadorRepository prestadorRepository) {
+        this.prestadorRepository = prestadorRepository;
+    }
 
     public List<Prestador> buscarTodos() {
         return prestadorRepository.findAll();
@@ -23,6 +25,10 @@ public class PrestadorService {
     }
 
     public Prestador salvar(Prestador prestador) {
+        Optional<Prestador> prestadorExistente = prestadorRepository.findByEmail(prestador.getEmail());
+        if (prestadorExistente.isPresent()) {
+            throw new RuntimeException("Este e-mail já está cadastrado para um prestador.");
+        }
         return prestadorRepository.save(prestador);
     }
 

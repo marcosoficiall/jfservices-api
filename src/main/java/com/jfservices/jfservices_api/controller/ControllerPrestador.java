@@ -2,7 +2,6 @@ package com.jfservices.jfservices_api.controller;
 
 import com.jfservices.jfservices_api.model.Prestador;
 import com.jfservices.jfservices_api.service.PrestadorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +10,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/prestadores")
-public class PrestadorController {
+public class ControllerPrestador {
 
-    @Autowired
-    private PrestadorService prestadorService;
+    private final PrestadorService prestadorService;
+
+    public ControllerPrestador(PrestadorService prestadorService) {
+        this.prestadorService = prestadorService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Prestador>> listarTodos() {
